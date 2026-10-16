@@ -24,7 +24,9 @@ export async function withErrorHandler(fn: () => Promise<NextResponse>): Promise
     return jsonError(500, "An unexpected error occurred. Please try again.");
   }
 }
-     
+
+// দুটি নামই এক্সপোর্ট করা হলো যাতে কোনো ইম্পোর্টে ভুল না হয়
+export const withErrorHandling = withErrorHandler;
 
 export function verifySameOrigin(req: Request): boolean {
   const origin = req.headers.get("origin");
