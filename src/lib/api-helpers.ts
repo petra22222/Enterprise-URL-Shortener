@@ -24,6 +24,7 @@ export async function withErrorHandler(fn: () => Promise<NextResponse>): Promise
     return jsonError(500, "An unexpected error occurred. Please try again.");
   }
 }
+     
 
 export function verifySameOrigin(req: Request): boolean {
   const origin = req.headers.get("origin");
