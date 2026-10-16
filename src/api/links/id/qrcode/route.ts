@@ -1,34 +1,47 @@
-// FILE: src/app/api/links/[id]/qrcode/route.ts
+// FILE: src/app/api/links/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import QRCode from "qrcode";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-import { jsonError } from "@/lib/api-helpers";
+import { jsonError, jsonOk, withErrorHandler } from "@/lib/api-helpers";
+import { validateAndNormalizeUrl, normalizeDomain, DEFAULT_DOMAIN } from "@/lib/url-safety";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const user = await getCurrentUser();
-  if (!user) return jsonError(401, "Authentication required.");
-  
-  const link = await prisma.link.findUnique({ where: { id: params.id } });
-  if (!link || link.ownerId !== user.id) return jsonError(404, "Link not found.");
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  return withErrorHandler(async () => {
+    const user = await getCurrentUser();
+    if (!user) return jsonError(401, "Authentication required.");
 
-  const { searchParams } = new URL(req.url);
-  const format = searchParams.get("format") === "svg" ? "svg" : "png";
-  const size = Math.min(1024, Math.max(128, Number(searchParams.get("size")) || 320));
-  const ec = (["L", "M", "Q", "H"].includes(searchParams.get("ec") || "") ? searchParams.get("ec") : "M") as QRCode.QRCodeErrorCorrectionLevel;
+    const link = await prisma.link.findUnique({ where: { id: params.id } });
+    if (!link || link.ownerId !== user.id) return jsonError(404, "Link not found.");
 
-  const protocol = link.domain.includes("localhost") ? "http" : "https";
-  const shortUrl = `${protocol}://${link.domain}/${link.shortCode}`;
+    const body = await req.json();
+    const { originalUrl, ...updateData } = body;
 
-  if (format === "svg") {
-    const svg = await QRCode.toString(shortUrl, { type: "svg", width: size, errorCorrectionLevel: ec });
-    return new NextResponse(svg, {
-      headers: { "Content-Type": "image/svg+xml", "Content-Disposition": `attachment; filename="${link.shortCode}.svg"` },
+    if (originalUrl) {
+      const host = normalizeDomain(req.headers.get("host") || DEFAULT_DOMAIN);
+      const check = validateAndNormalizeUrl(originalUrl, host);
+      if (!check.ok) return jsonError(400, (check as any).error || "Invalid URL");
+      updateData.originalUrl = check.url;
+    }
+
+    const updatedLink = await prisma.link.update({
+      where: { id: params.id },
+      data: updateData,
     });
-  }
 
-  const buffer = await QRCode.toBuffer(shortUrl, { type: "png", width: size, errorCorrectionLevel: ec });
-  return new NextResponse(new Uint8Array(buffer), {
-    headers: { "Content-Type": "image/png", "Content-Disposition": `attachment; filename="${link.shortCode}.png"` },
+    return jsonOk(updatedLink);
+  });
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  return withErrorHandler(async () => {
+    const user = await getCurrentUser();
+    if (!user) return jsonError(401, "Authentication required.");
+
+    const link = await prisma.link.findUnique({ where: { id: params.id } });
+    if (!link || link.ownerId !== user.id) return jsonError(404, "Link not found.");
+
+    await prisma.link.delete({ where: { id: params.id } });
+
+    return jsonOk({ success: true });
   });
 }
