@@ -9,7 +9,11 @@ const buckets = new Map<string, Bucket>();
 // basic cleanup so the map doesn't grow unbounded
 setInterval(() => {
   const now = Date.now();
-  for (const [key, b] of buckets) if (b.resetAt < now) buckets.delete(key);
+  buckets.forEach((b, key) => {
+    if (b.resetAt < now) {
+      buckets.delete(key);
+    }
+  });
 }, 5 * 60_000).unref?.();
 
 export function rateLimit(key: string, limit: number, windowMs: number) {
