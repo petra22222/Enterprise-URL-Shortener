@@ -6,7 +6,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./db";
 import { verifyPassword } from "./password";
 
-const providers = [
+const providers: any[] = [
   CredentialsProvider({
     name: "Credentials",
     credentials: {
