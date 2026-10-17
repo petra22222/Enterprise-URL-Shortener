@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     let alias: string | undefined;
     if (input.alias) {
       const aliasCheck = validateAliasFormat(input.alias);
-      if (!aliasCheck.ok) return jsonError(400, aliasCheck.error);
+     if (!aliasCheck.ok) return jsonError(400, (aliasCheck as any).error || "Invalid alias format");
       alias = input.alias;
     }
 
