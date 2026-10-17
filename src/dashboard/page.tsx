@@ -1,6 +1,7 @@
+// FILE: src/app/page.tsx (অথবা আপনার ড্যাশবোর্ড ফাইলটি)
 "use client";
 
-import { useState } from "formidable"; // অথবা সাধারণ রিয়াক্ট হুক
+import { useState } from "react";
 import React from "react";
 
 export default function Home() {
@@ -19,8 +20,10 @@ export default function Home() {
         body: JSON.stringify({ originalUrl: url }),
       });
       const data = await res.json();
-      if (data.success) {
-        setShortUrl(`http://${data.link.domain}/${data.link.shortCode}`);
+      if (data.success || data.link) {
+        const linkData = data.link || data;
+        const protocol = linkData.domain?.includes("localhost") ? "http" : "https";
+        setShortUrl(`${protocol}://${linkData.domain}/${linkData.shortCode}`);
       }
     } catch (err) {
       console.error(err);
@@ -60,7 +63,7 @@ export default function Home() {
               href={shortUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 font-semibold underline"
+              className="text-blue-600 font-semibold underline break-all"
             >
               {shortUrl}
             </a>
