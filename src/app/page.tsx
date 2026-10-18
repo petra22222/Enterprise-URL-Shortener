@@ -238,7 +238,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  style={{ padding: "8px 14px", borderRadius: "6px", backgroundColor: "#4f46e5", color: "#ffffff", border: "none", fontWeight: "600", fontSize: "12px", cursor: "pointer", shrink: 0 }}
+                  style={{ padding: "8px 14px", borderRadius: "6px", backgroundColor: "#4f46e5", color: "#ffffff", border: "none", fontWeight: "600", fontSize: "12px", cursor: "pointer", flexShrink: 0 }}
                 >
                   {copied ? "✓ Copied!" : "📋 Copy"}
                 </button>
