@@ -27,7 +27,7 @@ export default function Home() {
 
       if (res.ok && (data.success || data.link || data.shortCode)) {
         const linkData = data.link || data;
-        const host = linkData.domain || typeof window !== "undefined" ? window.location.host : "";
+        const host = linkData.domain || (typeof window !== "undefined" ? window.location.host : "");
         const protocol = typeof window !== "undefined" ? window.location.protocol : "https:";
         const code = linkData.shortCode || data.shortCode;
         setShortUrl(`${protocol}//${host}/${code}`);
@@ -50,75 +50,132 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white">
-      {/* Background Subtle Gradient Glow */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 -right-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"></div>
-      </div>
-
-      {/* Header */}
-      <header className="relative z-10 border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/20">
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+      {/* Header Navigation */}
+      <header
+        style={{
+          borderBottom: "1px solid #1e293b",
+          backgroundColor: "rgba(15, 23, 42, 0.8)",
+          backdropFilter: "blur(12px)",
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          padding: "16px 24px",
+        }}
+      >
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                fontSize: "20px",
+                boxShadow: "0 4px 14px rgba(99, 102, 241, 0.4)",
+              }}
+            >
               ⚡
             </div>
-            <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-              Enterprise Shortener
+            <span style={{ fontSize: "20px", fontWeight: "800", color: "#ffffff", letterSpacing: "-0.5px" }}>
+              Enterprise URL Shortener
             </span>
           </div>
-          <div className="flex items-center space-x-4">
-            <a
-              href="/login"
-              className="text-sm font-medium text-slate-300 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-slate-800/60"
-            >
-              Sign In
-            </a>
-          </div>
+          <a
+            href="/login"
+            style={{
+              padding: "8px 18px",
+              borderRadius: "8px",
+              backgroundColor: "#1e293b",
+              color: "#cbd5e1",
+              textDecoration: "none",
+              fontSize: "14px",
+              fontWeight: "600",
+              border: "1px solid #334155",
+            }}
+          >
+            Sign In
+          </a>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="relative z-10 max-w-4xl mx-auto px-6 py-16 flex-1 flex flex-col items-center justify-center text-center">
-        {/* Badge */}
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-6">
-          <span>🚀 Enterprise-Grade Link Management</span>
+      <main style={{ maxWidth: "1000px", margin: "0 auto", padding: "60px 24px", flex: 1 }}>
+        {/* Hero Section */}
+        <div style={{ textAlign: "center", marginBottom: "40px" }}>
+          <div
+            style={{
+              display: "inline-block",
+              padding: "6px 16px",
+              borderRadius: "20px",
+              backgroundColor: "rgba(99, 102, 241, 0.15)",
+              border: "1px solid rgba(99, 102, 241, 0.3)",
+              color: "#818cf8",
+              fontSize: "12px",
+              fontWeight: "700",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              marginBottom: "20px",
+            }}
+          >
+            🚀 High-Performance Link Management
+          </div>
+
+          <h1 style={{ fontSize: "42px", fontWeight: "900", color: "#ffffff", lineHeight: "1.2", marginBottom: "16px" }}>
+            Shorten, Share & Track Your <br />
+            <span style={{ background: "linear-gradient(90deg, #818cf8, #c084fc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              Links Effortlessly
+            </span>
+          </h1>
+
+          <p style={{ fontSize: "18px", color: "#94a3b8", maxWidth: "650px", margin: "0 auto", lineHeight: "1.6" }}>
+            Create custom branded short URLs with advanced rate-limiting, instant redirection, and high-level enterprise security.
+          </p>
         </div>
 
-        {/* Title */}
-        <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white mb-6 leading-tight">
-          Shorten, Share & Track Your <br className="hidden md:block" />
-          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Links Effortlessly
-          </span>
-        </h1>
-
-        <p className="text-lg md:text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed">
-          Create secure, branded, and high-performance shortened links in seconds. Designed with rate-limiting, custom alias support, and fast redirection.
-        </p>
-
-        {/* Card Box */}
-        <div className="w-full max-w-2xl bg-slate-900/80 border border-slate-800 p-6 md:p-8 rounded-2xl shadow-2xl backdrop-blur-xl text-left">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        {/* URL Shortener Form Card */}
+        <div
+          style={{
+            backgroundColor: "#0f172a",
+            border: "1px solid #1e293b",
+            borderRadius: "16px",
+            padding: "32px",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+            maxWidth: "600px",
+            margin: "0 auto 60px auto",
+          }}
+        >
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                Long URL
+              <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", marginBottom: "8px" }}>
+                Long URL *
               </label>
-              <div className="relative">
-                <input
-                  type="url"
-                  placeholder="https://example.com/my-very-long-link-path..."
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  required
-                  className="w-full px-4 py-3.5 bg-slate-950/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                />
-              </div>
+              <input
+                type="url"
+                placeholder="https://example.com/my-very-long-link..."
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "14px 16px",
+                  backgroundColor: "#020617",
+                  border: "1px solid #334155",
+                  borderRadius: "10px",
+                  color: "#ffffff",
+                  fontSize: "15px",
+                  boxSizing: "border-box",
+                  outline: "none",
+                }}
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", marginBottom: "8px" }}>
                 Custom Alias (Optional)
               </label>
               <input
@@ -126,68 +183,110 @@ export default function Home() {
                 placeholder="e.g. my-custom-link"
                 value={alias}
                 onChange={(e) => setAlias(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-950/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm"
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  backgroundColor: "#020617",
+                  border: "1px solid #334155",
+                  borderRadius: "10px",
+                  color: "#ffffff",
+                  fontSize: "14px",
+                  boxSizing: "border-box",
+                  outline: "none",
+                }}
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-4 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-[0.99] transition-all shadow-lg shadow-indigo-600/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              style={{
+                width: "100%",
+                padding: "16px",
+                borderRadius: "10px",
+                border: "none",
+                background: "linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%)",
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "700",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.7 : 1,
+                boxShadow: "0 4px 20px rgba(79, 70, 229, 0.4)",
+              }}
             >
-              {loading ? (
-                <>
-                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                  </svg>
-                  <span>Shortening...</span>
-                </>
-              ) : (
-                <span>Shorten URL Now →</span>
-              )}
+              {loading ? "Shortening Link..." : "Shorten URL Now →"}
             </button>
           </form>
 
-          {/* Error Alert */}
+          {/* Error Message */}
           {error && (
-            <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center space-x-3">
-              <span>⚠️</span>
-              <span>{error}</span>
+            <div style={{ marginTop: "20px", padding: "12px 16px", borderRadius: "8px", backgroundColor: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.3)", color: "#fca5a5", fontSize: "14px" }}>
+              ⚠️ {error}
             </div>
           )}
 
-          {/* Result Box */}
+          {/* Success Result Box */}
           {shortUrl && (
-            <div className="mt-6 p-5 rounded-xl bg-indigo-950/40 border border-indigo-500/30 animate-fadeIn">
-              <span className="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-2">
+            <div style={{ marginTop: "24px", padding: "16px", borderRadius: "12px", backgroundColor: "rgba(99, 102, 241, 0.1)", border: "1px solid rgba(99, 102, 241, 0.3)" }}>
+              <span style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#818cf8", textTransform: "uppercase", marginBottom: "8px" }}>
                 Your Shortened Link:
               </span>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-950 p-3 rounded-lg border border-slate-800">
-                <a
-                  href={shortUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-400 font-semibold underline truncate text-sm md:text-base px-1"
-                >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", backgroundColor: "#020617", padding: "10px 14px", borderRadius: "8px", border: "1px solid #1e293b", gap: "10px" }}>
+                <a href={shortUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#38bdf8", fontWeight: "600", textDecoration: "underline", wordBreak: "break-all", fontSize: "14px" }}>
                   {shortUrl}
                 </a>
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="px-4 py-2 rounded-md font-medium text-xs bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shrink-0 flex items-center justify-center space-x-1"
+                  style={{ padding: "8px 14px", borderRadius: "6px", backgroundColor: "#4f46e5", color: "#ffffff", border: "none", fontWeight: "600", fontSize: "12px", cursor: "pointer", shrink: 0 }}
                 >
-                  <span>{copied ? "✓ Copied!" : "📋 Copy Link"}</span>
+                  {copied ? "✓ Copied!" : "📋 Copy"}
                 </button>
               </div>
             </div>
           )}
         </div>
+
+        {/* Enterprise Article / Features Showcase Section */}
+        <section style={{ borderTop: "1px solid #1e293b", paddingTop: "50px" }}>
+          <h2 style={{ textAlign: "center", fontSize: "28px", fontWeight: "800", color: "#ffffff", marginBottom: "36px" }}>
+            Why Choose Enterprise URL Shortener?
+          </h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+            {/* Feature 1 */}
+            <div style={{ backgroundColor: "#0f172a", border: "1px solid #1e293b", padding: "24px", borderRadius: "12px" }}>
+              <div style={{ fontSize: "28px", marginBottom: "12px" }}>⚡</div>
+              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#ffffff", marginBottom: "8px" }}>Blazing Fast Redirection</h3>
+              <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: "1.5", margin: 0 }}>
+                Powered by Vercel Edge Serverless Architecture, ensuring sub-100ms URL lookup and redirection speed worldwide.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div style={{ backgroundColor: "#0f172a", border: "1px solid #1e293b", padding: "24px", borderRadius: "12px" }}>
+              <div style={{ fontSize: "28px", marginBottom: "12px" }}>🛡️</div>
+              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#ffffff", marginBottom: "8px" }}>Built-In Security</h3>
+              <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: "1.5", margin: 0 }}>
+                Automatic malicious URL scanning (`url-safety.ts`) and rate-limiting protection against automated spam bots.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div style={{ backgroundColor: "#0f172a", border: "1px solid #1e293b", padding: "24px", borderRadius: "12px" }}>
+              <div style={{ fontSize: "28px", marginBottom: "12px" }}>🏷️</div>
+              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#ffffff", marginBottom: "8px" }}>Custom Alias Branding</h3>
+              <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: "1.5", margin: 0 }}>
+                Create memorable custom links for marketing campaigns, direct downloads, or personal social media sharing.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-800/80 bg-slate-950/60 py-6 text-center text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} Enterprise URL Shortener. Built for high performance & reliability.</p>
+      <footer style={{ borderTop: "1px solid #1e293b", backgroundColor: "#020617", padding: "24px", textAlign: "center", fontSize: "13px", color: "#64748b" }}>
+        © {new Date().getFullYear()} Enterprise URL Shortener. Built with Next.js, Prisma & Vercel.
       </footer>
     </div>
   );
